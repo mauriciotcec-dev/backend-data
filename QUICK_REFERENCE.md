@@ -80,4 +80,18 @@ git credential-cache exit
 **Enable 2FA token:**
 If you have Two-Factor Authentication, you MUST use a Personal Access Token instead of your password.
 
+## 🐳 Docker Hub Authentication Error
+
+**Error:** "Username and password required" in GitHub Actions
+
+**Quick Fix:**
+```bash
+# 1. Create Docker Hub token at: hub.docker.com → Account Settings → Security → New Access Token
+# 2. Add secrets in GitHub: Settings → Secrets and variables → Actions
+#    - DOCKER_USERNAME: your Docker Hub username
+#    - DOCKER_PASSWORD: your Docker Hub token
+```
+
+See [DOCKER_SETUP.md](DOCKER_SETUP.md) for detailed instructions.
+
 For detailed instructions, see [CONTRIBUTING.md](CONTRIBUTING.md)

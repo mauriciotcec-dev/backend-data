@@ -189,6 +189,59 @@ git credential-cache exit
 5. Update documentation as needed
 6. Follow the project's coding standards
 
+## Docker Hub Authentication for CI/CD
+
+This repository uses GitHub Actions with `docker/login-action@v3` for Docker Hub authentication.
+
+### Setting Up Docker Secrets
+
+If you encounter the error **"Username and password required"** when running the Docker login workflow:
+
+1. **Create Docker Hub Access Token**
+   - Log in to [Docker Hub](https://hub.docker.com)
+   - Go to Account Settings → Security → New Access Token
+   - Create a token with Read & Write permissions
+   - Copy the token immediately (you won't see it again)
+
+2. **Add Secrets to GitHub Repository**
+   - Navigate to your repository: Settings → Secrets and variables → Actions
+   - Click "New repository secret"
+   - Add `DOCKER_USERNAME`: Your Docker Hub username
+   - Add `DOCKER_PASSWORD`: Your Docker Hub Personal Access Token (not your account password)
+
+3. **Workflow Configuration**
+   The workflow file `.github/workflows/docker-login.yml` uses these secrets:
+   ```yaml
+   - name: Log in to Docker Hub
+     uses: docker/login-action@v3
+     with:
+       username: ${{ secrets.DOCKER_USERNAME }}
+       password: ${{ secrets.DOCKER_PASSWORD }}
+   ```
+
+### Best Practices
+
+- **Never commit credentials** to the repository
+- Use Personal Access Tokens instead of passwords for better security
+- Set appropriate token permissions (typically Read & Write for package access)
+- Rotate tokens regularly for security
+- For organization repositories, ensure SSO is enabled if required
+
+### Troubleshooting Docker Login
+
+**Error: Username and password required**
+- Verify `DOCKER_USERNAME` and `DOCKER_PASSWORD` secrets are set in GitHub
+- Check that the secrets are accessible to the workflow (repository or organization level)
+- Ensure the Docker Hub token is valid and not expired
+
+**Error: unauthorized**
+- The token may lack necessary permissions
+- Create a new token with Read & Write access
+
+**Error: denied: requested access to the resource is denied**
+- Verify the username is correct
+- Check repository/image permissions on Docker Hub
+
 ## Getting Help
 
 If you continue to experience issues:

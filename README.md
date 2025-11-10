@@ -80,4 +80,27 @@ git credential-manager erase https://github.com
 git config --global --unset credential.helper
 ```
 
+## Configuración de Docker Login (GitHub Actions)
+
+Este repositorio incluye un workflow de GitHub Actions para autenticación con Docker Hub. Si encuentras el error:
+```
+Error: Username and password required
+```
+
+### Configurar Secretos de Docker
+
+1. Ve a tu repositorio en GitHub: Settings → Secrets and variables → Actions
+2. Agrega los siguientes secretos:
+   - `DOCKER_USERNAME`: Tu nombre de usuario de Docker Hub
+   - `DOCKER_PASSWORD`: Tu contraseña o Personal Access Token de Docker Hub
+
+### Crear Docker Hub Personal Access Token
+
+1. Inicia sesión en [Docker Hub](https://hub.docker.com)
+2. Ve a Account Settings → Security → New Access Token
+3. Crea un token con permisos de lectura/escritura
+4. Copia el token y úsalo como `DOCKER_PASSWORD` en GitHub Secrets
+
+El workflow `.github/workflows/docker-login.yml` se ejecutará automáticamente en push y pull requests.
+
 Para más información, consulta [CONTRIBUTING.md](CONTRIBUTING.md).
